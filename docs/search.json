@@ -1,0 +1,450 @@
+[
+  {
+    "objectID": "biohack-modulo4.html#section",
+    "href": "biohack-modulo4.html#section",
+    "title": "biohack-modulo4",
+    "section": "",
+    "text": "Módulo 4: Visualización de datos con {ggplot2}\n\nMauricio Moreno, PhD"
+  },
+  {
+    "objectID": "biohack-modulo4.html#introducción",
+    "href": "biohack-modulo4.html#introducción",
+    "title": "biohack-modulo4",
+    "section": "Introducción",
+    "text": "Introducción\n\n\nUsaremos los datos del {palmerpenguins} así también como los datos del archivo de Excel “rotaXLS.xlsx”.\nPaquetes adicionales: {viridis}, {patchwork}, {scales}:\ninstall.packages(\"viridis\", \"patchwork\", \"scales\")\nAprenderemos paso a paso cómo funciona {ggplot2} dando un vistazo a sus funciones y objetos."
+  },
+  {
+    "objectID": "biohack-modulo4.html#ggplot2",
+    "href": "biohack-modulo4.html#ggplot2",
+    "title": "biohack-modulo4",
+    "section": "{ggplot2}",
+    "text": "{ggplot2}\n\n\n{ggplot2} es un paquete de gráficos creado por Hadley Wickham en 2005 como una opción alternativa a los gráficos base de R (es de hecho este paquete el que inició el {tidyverse}).\nSe basa en añadir elementos a un gráfico capa por capa.\n{ggplot2} puede usar tanto tablas anchas como largas. Sin embargo, en la mayoría de los casos, se explotan más sus capacidades al utilizar tablas largas.\nPresenta varias ventajas, entre ellas:\n\nMayor versatilidad al integrar funciones predeterminadas que permiten cambiar entre tipos de gráficos fácil y rápidamente.\nAmplia variedad de paletas de color y estilos (útiles para crear gráficos profesionales y listos para publicación).\nBasta cantidad de librerías accesorias para gráficos especializados.\n\nSu funcionamiento se basa principalmente en:\n\nEl argumento de mapeo (mapping)\ny, Geometrías (geom_)."
+  },
+  {
+    "objectID": "biohack-modulo4.html#función-de-inicio-ggplot",
+    "href": "biohack-modulo4.html#función-de-inicio-ggplot",
+    "title": "biohack-modulo4",
+    "section": "Función de inicio ggplot",
+    "text": "Función de inicio ggplot\n\n\nConstituye la primera capa o la base para llevar a cabo un gráfico.\nPosee dos argumentos principales:\n\ndata para indicar la tabla de datos a usarse\nmapping para indicar las variables que gobernarán los ejes coordenados del gráfico"
+  },
+  {
+    "objectID": "biohack-modulo4.html#función-de-inicio-ggplot-1",
+    "href": "biohack-modulo4.html#función-de-inicio-ggplot-1",
+    "title": "biohack-modulo4",
+    "section": "Función de inicio ggplot",
+    "text": "Función de inicio ggplot\n\n\n\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\nggplot(data = penguins,\n       mapping = aes(x = bill_length_mm, \n                     y = bill_depth_mm))"
+  },
+  {
+    "objectID": "biohack-modulo4.html#función-de-inicio-ggplot-2",
+    "href": "biohack-modulo4.html#función-de-inicio-ggplot-2",
+    "title": "biohack-modulo4",
+    "section": "Función de inicio ggplot",
+    "text": "Función de inicio ggplot\nNo es necesario el usar todo el tiempo el nombre de los argumentos en la función ggplot:\n\n\n\nlibrary(palmerpenguins)\nlibrary(ggplot2)\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm))"
+  },
+  {
+    "objectID": "biohack-modulo4.html#geometrías",
+    "href": "biohack-modulo4.html#geometrías",
+    "title": "biohack-modulo4",
+    "section": "Geometrías",
+    "text": "Geometrías\n\n\nLas geometrías son objetos que serán superpuestos en la base creada por la función de inicio.\nEn general, están nombradas con la preposición geom_ seguida de su clase.\nExisten una variedad amplia de geometrías:\n\ngeom_bar para gráficos de barras\ngeom_line para gráficos de lineas\ngeom_boxplot para gráficos de caja y bigote\ngeom_histogram para histogramas\ngeom_density para densidades\nentre otras\n\nPara añadir geometrías y otras opciones a nuestro gráfico base usamos los operadores:\n\n+, ó\n%+%. Este último no es tan común, ya que sobre-escribe los datos originales."
+  },
+  {
+    "objectID": "biohack-modulo4.html#geometrías-1",
+    "href": "biohack-modulo4.html#geometrías-1",
+    "title": "biohack-modulo4",
+    "section": "Geometrías",
+    "text": "Geometrías\n\n\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm)) +\n  geom_point()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#estéticas-de-las-geometrías-aesthetics",
+    "href": "biohack-modulo4.html#estéticas-de-las-geometrías-aesthetics",
+    "title": "biohack-modulo4",
+    "section": "Estéticas de las geometrías (aesthetics)",
+    "text": "Estéticas de las geometrías (aesthetics)\n\n\nLas geometrías tienen argumentos en común independientemente de sus específicos usos.\nEntre estas están:\n\nalpha determina el nivel de transparencia (entre 0 y 1).\nfill determina el color de relleno de una geometría. Puede ser agregado de manera manual o en función de otra variable.\ncolor o colour determina el color del contorno de una geometría. Puede ser agregado de manera manual o en función de otra variable.\n\nExisten aesthetics más específicos que funcionarán únicamente con ciertas geometrías, tales como:\n\nsize, determina el tamaño de los puntos en la geometría de puntos (geom_point)\nlinetype, con 6 posibles valores permite seleccionar el estilo de línea.\nlinewidth determina el grosor de una línea.\nlineend determina el estilo de los extremos de una línea.\nshape determina el estilo de los puntos a mostrarse (25 posibles estilos)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#estéticas-de-las-geometrías-aesthetics-1",
+    "href": "biohack-modulo4.html#estéticas-de-las-geometrías-aesthetics-1",
+    "title": "biohack-modulo4",
+    "section": "Estéticas de las geometrías (aesthetics)",
+    "text": "Estéticas de las geometrías (aesthetics)\n\n\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm)) +\n  geom_point(alpha = 0.25, \n             color = \"red\", size = 5)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#agrupaciones",
+    "href": "biohack-modulo4.html#agrupaciones",
+    "title": "biohack-modulo4",
+    "section": "Agrupaciones",
+    "text": "Agrupaciones\n\nSe pueden asignar estéticas dependiendo de los grupos presentes en los datos.\nPodemos definirlo en la función de mapeo.\n\n\n\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm,\n           color = species)) +\n  geom_point(alpha = 0.25, size = 5)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#escalas",
+    "href": "biohack-modulo4.html#escalas",
+    "title": "biohack-modulo4",
+    "section": "Escalas",
+    "text": "Escalas\n\n\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm,\n           color = species)) +\n  geom_point(alpha = 0.25, size = 5) +\n  scale_x_continuous(breaks = seq(30, 60, 5)) +\n  scale_y_continuous(breaks = seq(10, 24, 2))"
+  },
+  {
+    "objectID": "biohack-modulo4.html#paletas-de-color",
+    "href": "biohack-modulo4.html#paletas-de-color",
+    "title": "biohack-modulo4",
+    "section": "Paletas de color",
+    "text": "Paletas de color\n\n\nUna de las razones por las cuales {ggplot2} es tan popular, es la relativa sencillez de usar distintas paletas de color.\nAl no ser un curso dedicado a visualización de datos, nos limitaremos a explorar la oferta de la librería {viridis}.\n{viridis} ofrece 8 paletas de color basadas en secuencias de azul y amarillo que evitan en la medida de lo posible el color rojo. Es recomendada por ciertos Journals al ser amigable con personas daltónicas."
+  },
+  {
+    "objectID": "biohack-modulo4.html#paletas-de-color-1",
+    "href": "biohack-modulo4.html#paletas-de-color-1",
+    "title": "biohack-modulo4",
+    "section": "Paletas de color",
+    "text": "Paletas de color\n\n\n\nlibrary(viridis)\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm,\n           color = species)) +\n  geom_point(alpha = 0.25, size = 5) +\n  scale_x_continuous(breaks = seq(30, 60, 5)) +\n  scale_y_continuous(breaks = seq(10, 24, 2)) +\n  scale_color_viridis(discrete = T)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#facetas",
+    "href": "biohack-modulo4.html#facetas",
+    "title": "biohack-modulo4",
+    "section": "Facetas",
+    "text": "Facetas\n\n\nPara generar gráficos de facetas (o también conocidos como paneles), {ggplot2} cuenta con dos funciones:\nfacet_wrap: produce una figura de paneles en 2-D definida por una sola variable\nfacet_grid: produce una figura de paneles en 2-D definida por variables que forman filas y columnas"
+  },
+  {
+    "objectID": "biohack-modulo4.html#facetas-con-facet_wrap",
+    "href": "biohack-modulo4.html#facetas-con-facet_wrap",
+    "title": "biohack-modulo4",
+    "section": "Facetas con facet_wrap",
+    "text": "Facetas con facet_wrap\nfacet_wrap con una variable\n\n\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm,\n           color = species)) +\n  geom_point(alpha = 0.25, size = 5) +\n  scale_x_continuous(breaks = seq(30, 60, 5)) +\n  scale_y_continuous(breaks = seq(10, 24, 2)) +\n  scale_color_viridis(discrete = T) +\n  facet_wrap(~island)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#facetas-con-facet_wrap-1",
+    "href": "biohack-modulo4.html#facetas-con-facet_wrap-1",
+    "title": "biohack-modulo4",
+    "section": "Facetas con facet_wrap",
+    "text": "Facetas con facet_wrap\nfacet_wrap con dos variables\n\n\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm,\n           color = species)) +\n  geom_point(alpha = 0.25, size = 5) +\n  scale_x_continuous(breaks = seq(30, 60, 5)) +\n  scale_y_continuous(breaks = seq(10, 24, 2)) +\n  scale_color_viridis(discrete = T) +\n  facet_wrap(species~island)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#facetas-con-facet_grid",
+    "href": "biohack-modulo4.html#facetas-con-facet_grid",
+    "title": "biohack-modulo4",
+    "section": "Facetas con facet_grid",
+    "text": "Facetas con facet_grid\n\n\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm,\n           color = species)) +\n  geom_point(alpha = 0.25, size = 5) +\n  scale_x_continuous(breaks = seq(30, 60, 5)) +\n  scale_y_continuous(breaks = seq(10, 24, 2)) +\n  scale_color_viridis(discrete = T) +\n  facet_grid(species~island)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#etiquetas",
+    "href": "biohack-modulo4.html#etiquetas",
+    "title": "biohack-modulo4",
+    "section": "Etiquetas",
+    "text": "Etiquetas\n\n\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm,\n           color = species)) +\n  geom_point(alpha = 0.25, size = 5) +\n  scale_x_continuous(breaks = seq(30, 60, 5)) +\n  scale_y_continuous(breaks = seq(10, 24, 2)) +\n  scale_color_viridis(discrete = T) +\n  facet_grid(species~island) +\n  labs(title = \"Largo de pico vs. Profundidad de pico\",\n       subtitle = \"Pingüinos de Palmer\",\n       caption = \"Gráfica propia\",\n       x = \"Largo del pico\",\n       y = \"Profundidad del pico\",\n       color = \"Especie\")"
+  },
+  {
+    "objectID": "biohack-modulo4.html#estilos",
+    "href": "biohack-modulo4.html#estilos",
+    "title": "biohack-modulo4",
+    "section": "Estilos",
+    "text": "Estilos\n\n{ggplot2} nos ofrece 10 estilos predeterminados para la presentación de nuestras figuras.\n\n\n\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm,\n           color = species)) +\n  geom_point(alpha = 0.25, size = 5) +\n  scale_x_continuous(breaks = seq(30, 60, 5)) +\n  scale_y_continuous(breaks = seq(10, 24, 2)) +\n  scale_color_viridis(discrete = T) +\n  facet_grid(species~island) +\n  labs(title = \"Largo de pico vs. Profundidad de pico\",\n       subtitle = \"Pingüinos de Palmer\",\n       caption = \"Gráfica propia\",\n       x = \"Largo del pico\",\n       y = \"Profundidad del pico\",\n       color = \"Especie\") +\n  theme_bw()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-como-objetos",
+    "href": "biohack-modulo4.html#gráficos-como-objetos",
+    "title": "biohack-modulo4",
+    "section": "Gráficos como objetos",
+    "text": "Gráficos como objetos\n\n\nA diferencia de los gráficos base de R (no cubiertos a detalle en este curso), con {ggplot2} tenemos varias ventajas:\n\nAñadir geometrías o estéticas sobre una figura sin necesidad de volver a ejecutar nuestro código.\nPoder organizar gráficos en disposiciones más complejas con la ayuda de {patchwork} como veremos más adelante.\nExportar nuestros gráficos en forma de objetos de R sujetos a cambios posteriores."
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-como-objetos-1",
+    "href": "biohack-modulo4.html#gráficos-como-objetos-1",
+    "title": "biohack-modulo4",
+    "section": "Gráficos como objetos",
+    "text": "Gráficos como objetos\n\n\n\nfig1 &lt;- ggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm,\n           color = species)) +\n  geom_point(alpha = 0.25, size = 5) +\n  scale_x_continuous(breaks = seq(30, 60, 5)) +\n  scale_y_continuous(breaks = seq(10, 24, 2)) +\n  scale_color_viridis(discrete = T) +\n  facet_grid(species~island) +\n  labs(title = \"Largo de pico vs. Profundidad de pico\",\n       subtitle = \"Pingüinos de Palmer\",\n       caption = \"Gráfica propia\",\n       x = \"Largo del pico\",\n       y = \"Profundidad del pico\",\n       color = \"Especie\") +\n  theme_bw()\n\nfig2 &lt;- fig1 + theme_classic()\nfig2"
+  },
+  {
+    "objectID": "biohack-modulo4.html#geometrías-estadísticas",
+    "href": "biohack-modulo4.html#geometrías-estadísticas",
+    "title": "biohack-modulo4",
+    "section": "Geometrías estadísticas",
+    "text": "Geometrías estadísticas\n\n\nOtra funcionalidad importante son las geometrías estadísticas. Entre ellas:\ngeom_smooth: grafica regresiones sobre nubes de puntos\ngeom_errorbar y geom_errorbarh: grafican lineas de error verticales y horizontales respectivamente.\ngeom_ribbon: grafica nubes sombreadas que pueden representar varios estadísticos como errores estándar, intervalos de confianza, etc."
+  },
+  {
+    "objectID": "biohack-modulo4.html#geometrías-estadísticas-1",
+    "href": "biohack-modulo4.html#geometrías-estadísticas-1",
+    "title": "biohack-modulo4",
+    "section": "Geometrías estadísticas",
+    "text": "Geometrías estadísticas\n\n\n\nggplot(penguins,\n       aes(x = bill_length_mm, \n           y = bill_depth_mm,\n           color = species)) +\n  geom_point(alpha = 0.25, size = 5) +\n  scale_x_continuous(breaks = seq(30, 60, 5)) +\n  scale_y_continuous(breaks = seq(10, 24, 2)) +\n  scale_color_viridis(discrete = T) +\n  facet_grid(species~island) +\n  labs(title = \"Largo de pico vs. Profundidad de pico\",\n       subtitle = \"Pingüinos de Palmer\",\n       caption = \"Gráfica propia\",\n       x = \"Largo del pico\",\n       y = \"Profundidad del pico\",\n       color = \"Especie\") +\n  theme_bw() +\n  geom_smooth(method = \"lm\")"
+  },
+  {
+    "objectID": "biohack-modulo4.html#anatomía-de-un-ggplot",
+    "href": "biohack-modulo4.html#anatomía-de-un-ggplot",
+    "title": "biohack-modulo4",
+    "section": "Anatomía de un ggplot",
+    "text": "Anatomía de un ggplot\n\n\nImagen tomada de aquí"
+  },
+  {
+    "objectID": "biohack-modulo4.html#introducción-1",
+    "href": "biohack-modulo4.html#introducción-1",
+    "title": "biohack-modulo4",
+    "section": "Introducción",
+    "text": "Introducción\n\n\nEn resumen, los tipos usados con más frecuencia, dependiendo del tipo de datos son:\n\nUnivariados\n\nDatos categóricos\nDatos cuantitativos\n\nBivariados\n\nDatos categóricos vs. datos categóricos\nDatos cuantitativos vs. datos cuantitativos\nDatos categóricos vs. datos cuantitativos"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-barras",
+    "href": "biohack-modulo4.html#gráficos-de-barras",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de barras",
+    "text": "Gráficos de barras\n\n\n\nggplot(penguins,\n       aes(x = island)) +\n  geom_bar()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-barras-1",
+    "href": "biohack-modulo4.html#gráficos-de-barras-1",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de barras",
+    "text": "Gráficos de barras\n\n\n\nggplot(penguins,\n       aes(x = island, fill = island)) +\n  geom_bar() +\n  labs(title = \"Pingüinos de Palmer\",\n       caption = \"Gráfica propia\",\n       x = NULL,\n       y = \"# de Pingüinos\") +\n  theme_bw() +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-barras-2",
+    "href": "biohack-modulo4.html#gráficos-de-barras-2",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de barras",
+    "text": "Gráficos de barras\nEjes con porcentajes usando {scales} y {ggplot2}\n\n\n\nggplot(penguins,\n       aes(x = island, \n           y = after_stat(count/sum(count)),\n           fill = island)) +\n  geom_bar() +\n  labs(title = \"Pingüinos de Palmer\",\n       caption = \"Gráfica propia\",\n       x = NULL,\n       y = \"% de Pingüinos\") +\n  theme_bw() +\n  theme(legend.position = \"none\") +\n  scale_y_continuous(labels = scales::percent)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-barras-3",
+    "href": "biohack-modulo4.html#gráficos-de-barras-3",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de barras",
+    "text": "Gráficos de barras\nAñadiendo texto\n\n\n\nlibrary(dplyr)\nplt_resumen &lt;- penguins |&gt;\n  count(island)\n\nggplot(plt_resumen,\n       aes(x = island, \n           y = n,\n           fill = island)) +\n  geom_bar(stat = \"identity\") +\n  geom_text(aes(label = n), vjust = -0.5) +\n  labs(title = \"Pingüinos de Palmer\",\n       caption = \"Gráfica propia\",\n       x = NULL,\n       y = \"# de Pingüinos\") +\n  theme_bw() +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-barras-4",
+    "href": "biohack-modulo4.html#gráficos-de-barras-4",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de barras",
+    "text": "Gráficos de barras\nArreglando texto en los ejes (y otros detalles)\n\n\n\nlibrary(dplyr)\nplt2_resumen &lt;- msleep |&gt;\n  count(order) |&gt;\n  mutate(pge = n / sum(n),\n         pge_tex = paste0(round(pge * 100), \"%\"))\n\nggplot(plt2_resumen,\n       aes(x = reorder(order, pge), \n           y = pge,\n           fill = order)) +\n  geom_bar(stat = \"identity\") +\n  geom_text(aes(label = pge_tex), vjust = -0.5) +\n  labs(title = \"% de animales por orden en un estudio del sueño\",\n       caption = \"Gráfica propia\",\n       x = NULL,\n       y = \"% de animales por orden\") +\n  theme_bw() +\n  theme(legend.position = \"none\") +\n  scale_y_continuous(labels = scales::percent)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-barras-5",
+    "href": "biohack-modulo4.html#gráficos-de-barras-5",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de barras",
+    "text": "Gráficos de barras\nArreglando texto en los ejes (y otros detalles)\n\n\n\nlibrary(dplyr)\nplt2_resumen &lt;- msleep |&gt;\n  count(order) |&gt;\n  mutate(pge = n / sum(n),\n         pge_tex = paste0(round(pge * 100), \"%\"))\n\nggplot(plt2_resumen,\n       aes(x = reorder(order, pge), \n           y = pge)) +\n  geom_bar(stat = \"identity\", fill = \"blue\") +\n  geom_text(aes(label = pge_tex), hjust = -0.25) +\n  labs(title = \"% de animales por orden\\nen un estudio del sueño\",\n       caption = \"Gráfica propia\",\n       x = NULL,\n       y = \"% de animales por orden\") +\n  theme_bw() +\n  scale_y_continuous(labels = scales::percent) +\n  coord_flip()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-barras-6",
+    "href": "biohack-modulo4.html#gráficos-de-barras-6",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de barras",
+    "text": "Gráficos de barras\nRotando el texto en los ejes\n\n\n\nlibrary(dplyr)\nplt2_resumen &lt;- msleep |&gt;\n  count(order) |&gt;\n  mutate(pge = n / sum(n),\n         pge_tex = paste0(round(pge * 100), \"%\"))\n\nggplot(plt2_resumen,\n       aes(x = reorder(order, pge), \n           y = pge)) +\n  geom_bar(stat = \"identity\", fill = \"blue\") +\n  geom_text(aes(label = pge_tex), vjust = -0.25) +\n  labs(title = \"% de animales por orden\\nen un estudio del sueño\",\n       caption = \"Gráfica propia\",\n       x = NULL,\n       y = \"% de animales por orden\") +\n  theme_bw() +\n  scale_y_continuous(labels = scales::percent) +\n  theme(axis.text.x = element_text(angle = 45, \n                                   hjust = 1))"
+  },
+  {
+    "objectID": "biohack-modulo4.html#otros-tipos-de-gráficos-univariados-categóricos",
+    "href": "biohack-modulo4.html#otros-tipos-de-gráficos-univariados-categóricos",
+    "title": "biohack-modulo4",
+    "section": "Otros tipos de gráficos univariados categóricos",
+    "text": "Otros tipos de gráficos univariados categóricos\n\n\nGráficos de pastel: paquete {ggpie}\nDiagramas de árboles: paquete {treemapify}"
+  },
+  {
+    "objectID": "biohack-modulo4.html#histogramas",
+    "href": "biohack-modulo4.html#histogramas",
+    "title": "biohack-modulo4",
+    "section": "Histogramas",
+    "text": "Histogramas\n\n\n\nggplot(airquality, # Tabla de datos: airquality (R base)\n       aes(x = Temp)) +\n  geom_histogram()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráfico-de-densidad-kernel",
+    "href": "biohack-modulo4.html#gráfico-de-densidad-kernel",
+    "title": "biohack-modulo4",
+    "section": "Gráfico de densidad kernel",
+    "text": "Gráfico de densidad kernel\n\n\n\nggplot(airquality, # Tabla de datos: airquality (R base)\n       aes(x = Temp)) +\n  geom_density()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráfico-de-barras-apiladas",
+    "href": "biohack-modulo4.html#gráfico-de-barras-apiladas",
+    "title": "biohack-modulo4",
+    "section": "Gráfico de barras apiladas",
+    "text": "Gráfico de barras apiladas\n\n\n\nggplot(mpg, # Tabla de datos: mpg (ggplot2)\n       aes(x = class,\n           fill = drv)) +\n  geom_bar(position = \"stack\")"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráfico-de-barras-agrupadas",
+    "href": "biohack-modulo4.html#gráfico-de-barras-agrupadas",
+    "title": "biohack-modulo4",
+    "section": "Gráfico de barras agrupadas",
+    "text": "Gráfico de barras agrupadas\n\n\n\nggplot(mpg, # Tabla de datos: mpg (ggplot2)\n       aes(x = class,\n           fill = drv)) +\n  geom_bar(position = \"dodge\")"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráfico-de-barras-agrupadas-1",
+    "href": "biohack-modulo4.html#gráfico-de-barras-agrupadas-1",
+    "title": "biohack-modulo4",
+    "section": "Gráfico de barras agrupadas",
+    "text": "Gráfico de barras agrupadas\n\n\n\nggplot(mpg, # Tabla de datos: mpg (ggplot2)\n       aes(x = class,\n           fill = drv)) +\n  geom_bar(position = position_dodge(preserve = \"single\"))"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráfico-de-barras-segmentadas",
+    "href": "biohack-modulo4.html#gráfico-de-barras-segmentadas",
+    "title": "biohack-modulo4",
+    "section": "Gráfico de barras segmentadas",
+    "text": "Gráfico de barras segmentadas\n\n\n\nggplot(mpg, # Tabla de datos: mpg (ggplot2)\n       aes(x = class,\n           fill = drv)) +\n  geom_bar(position = \"fill\"))"
+  },
+  {
+    "objectID": "biohack-modulo4.html#agregando-más-formatos",
+    "href": "biohack-modulo4.html#agregando-más-formatos",
+    "title": "biohack-modulo4",
+    "section": "Agregando más formatos",
+    "text": "Agregando más formatos\n\n\n\nlibrary(scales)\nggplot(mpg, \n       aes(x = factor(class,\n                      levels = c(\"2seater\", \"subcompact\", \n                                \"compact\", \"midsize\", \n                                \"minivan\", \"suv\", \"pickup\")),\n           fill = factor(drv, \n                         levels = c(\"f\", \"r\", \"4\"),\n                         labels = c(\"delantera\", \n                                    \"trasera\", \n                                    \"4x4\")))) + \n  geom_bar(position = \"fill\") +\n  scale_y_continuous(breaks = seq(0, 1, .2), \n                     label = percent) +\n  scale_fill_brewer(palette = \"Set2\") +\n  labs(y = \"Porcentage\", \n       fill=\"Tracción\",\n       x = \"Clase\",\n       title = \"Tracción de autos por clase\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-dispersión",
+    "href": "biohack-modulo4.html#gráficos-de-dispersión",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de dispersión",
+    "text": "Gráficos de dispersión\n\n\n\npenguins |&gt;\n  ggplot(aes(x = bill_depth_mm, \n             y = bill_length_mm)) +\n  geom_point()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-dispersión-1",
+    "href": "biohack-modulo4.html#gráficos-de-dispersión-1",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de dispersión",
+    "text": "Gráficos de dispersión\nAñadiendo líneas de regresión\n\n\n\npenguins |&gt;\n  ggplot(aes(x = bill_depth_mm, \n             y = bill_length_mm)) +\n  geom_point() +\n  geom_smooth(method = \"lm\")\n\n\n\n\n\n\n\n\n\n\n\n\npenguins |&gt;\n  ggplot(aes(x = bill_depth_mm, \n             y = bill_length_mm)) +\n  geom_point() +\n  geom_smooth(method = \"lm\", \n              formula = y ~ poly(x, 2))"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-líneas",
+    "href": "biohack-modulo4.html#gráficos-de-líneas",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de líneas",
+    "text": "Gráficos de líneas\n\n\n\neconomics |&gt;\n  ggplot(aes(x = date, \n             y = pce)) +\n  geom_line()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-barras-para-estadísticos-descriptivos",
+    "href": "biohack-modulo4.html#gráficos-de-barras-para-estadísticos-descriptivos",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de barras (para estadísticos descriptivos)",
+    "text": "Gráficos de barras (para estadísticos descriptivos)\n\n\n\nfig_dia &lt;- diamonds |&gt;\n  group_by(cut) %&gt;%\n  summarise(precio_media = mean(price),\n            std.dev = sd(price),\n            se = std.dev/sqrt(n()))\n\nfig_dia |&gt;\n  ggplot(aes(x = reorder(cut, precio_media), \n             y = precio_media,  \n             fill = cut)) +\n  geom_bar(stat = \"identity\") +\n  geom_errorbar(aes(ymin = precio_media - se,\n                    ymax = precio_media + se),\n                width = 0.2, color = \"red\")"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-densidad-kernel-agrupados",
+    "href": "biohack-modulo4.html#gráficos-de-densidad-kernel-agrupados",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de densidad kernel agrupados",
+    "text": "Gráficos de densidad kernel agrupados\n\n\n\npenguins |&gt;\n  ggplot(aes(x = bill_length_mm, \n             fill = species)) +\n  geom_density(alpha = 0.4)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-caja-y-bigote",
+    "href": "biohack-modulo4.html#gráficos-de-caja-y-bigote",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de caja y bigote",
+    "text": "Gráficos de caja y bigote\n\n\n\nUn gráfico de caja y bigote es el resumen de 5 cantidades de importancia para explorar una distribución: la mediana, los cuantiles 1 y 3 y los valores mínimo y máximo de una distribución en función del RIC\n\n\n\nImagen de autoría de Michael Galarnyk"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-caja-y-bigote-1",
+    "href": "biohack-modulo4.html#gráficos-de-caja-y-bigote-1",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de caja y bigote",
+    "text": "Gráficos de caja y bigote\n\n\n\npenguins |&gt;\n  ggplot(aes(x = species,\n             y = bill_length_mm, \n             fill = species)) +\n  geom_boxplot()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-violín",
+    "href": "biohack-modulo4.html#gráficos-de-violín",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de violín",
+    "text": "Gráficos de violín\n\n\n\npenguins |&gt;\n  ggplot(aes(x = species,\n             y = bill_length_mm, \n             fill = species)) +\n  geom_violin()"
+  },
+  {
+    "objectID": "biohack-modulo4.html#gráficos-de-violín-1",
+    "href": "biohack-modulo4.html#gráficos-de-violín-1",
+    "title": "biohack-modulo4",
+    "section": "Gráficos de violín",
+    "text": "Gráficos de violín\nCombinados con caja y bigotes\n\n\n\npenguins |&gt;\n  ggplot(aes(x = species,\n             y = bill_length_mm, \n             fill = species)) +\n  geom_violin()+\n  geom_boxplot(width = 0.15,\n               fill = \"orange\",\n               outlier.color = \"red\",\n               outlier.size = 3)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#patchwork",
+    "href": "biohack-modulo4.html#patchwork",
+    "title": "biohack-modulo4",
+    "section": "{patchwork}",
+    "text": "{patchwork}\n\n\n\nlibrary(patchwork)\np1 &lt;- penguins |&gt;\n  ggplot(aes(x = species,\n             y = bill_length_mm, \n             fill = species)) +\n  geom_violin()+\n  geom_boxplot(width = 0.15,\n               fill = \"orange\",\n               outlier.color = \"red\",\n               outlier.size = 3)\n\np2 &lt;- penguins |&gt;\n  ggplot(aes(x = bill_depth_mm, \n             y = bill_length_mm)) +\n  geom_point() +\n  geom_smooth(method = \"lm\")\n\np3 &lt;- economics |&gt;\n  ggplot(aes(x = date, \n             y = pce)) +\n  geom_line()\n\n(p1 + p2)/p3"
+  },
+  {
+    "objectID": "biohack-modulo4.html#patchwork-1",
+    "href": "biohack-modulo4.html#patchwork-1",
+    "title": "biohack-modulo4",
+    "section": "{patchwork}",
+    "text": "{patchwork}\n\n\n\n. . .\n\nfig1 &lt;- (p1 + p2)/p3 + plot_annotation(tag_levels = \"A\")\nfig1"
+  },
+  {
+    "objectID": "biohack-modulo4.html#exportando-gráficos-con-ggsave",
+    "href": "biohack-modulo4.html#exportando-gráficos-con-ggsave",
+    "title": "biohack-modulo4",
+    "section": "Exportando gráficos con ggsave",
+    "text": "Exportando gráficos con ggsave\n\nggsave(\"out_fig/figura1.png\", plot = fig1, width = 8)\nggsave(\"out_fig/figura1.jpg\", plot = fig1, width = 8)\nggsave(\"out_fig/figura1.pdf\", plot = fig1, width = 8)\n\nMira en la ayuda para más información de los argumentos de ggsave."
+  },
+  {
+    "objectID": "biohack-modulo4.html#section-1",
+    "href": "biohack-modulo4.html#section-1",
+    "title": "biohack-modulo4",
+    "section": "",
+    "text": "Ejercicios 4.1"
+  },
+  {
+    "objectID": "biohack-modulo4.html#introducción-2",
+    "href": "biohack-modulo4.html#introducción-2",
+    "title": "biohack-modulo4",
+    "section": "Introducción",
+    "text": "Introducción\n\n\nDebería idealmente llevarse a cabo antes de formalmente analizar los datos.\nEs de mucha importancia porque nos permite:\n\nHallar posibles inconsistencias de los datos\nIdentificar observaciones perdidas y su posible impacto\nDeterimnar la presencia de posibles observaciones anormales (outliers)\nTener una idea de la distribución de los datos (que nos facilitará ajustar nuestros modelos estadísticos en caso de ser necesario)\nChecar por correlaciones múltiples entre las variables (particularmente útil en modelos de regresión lineal)\n\nEl AED no tiene un flujo de trabajo formal, pero siempre vale la pena comenzar por chequear los estadísticos descriptivos y la posible pérdida de datos."
+  },
+  {
+    "objectID": "biohack-modulo4.html#datos-perdidos",
+    "href": "biohack-modulo4.html#datos-perdidos",
+    "title": "biohack-modulo4",
+    "section": "Datos perdidos",
+    "text": "Datos perdidos\n\n\nLa perdida de datos es común en casi todo experimento.\nDe existir, existen tres alternativas para proceder dependiendo de la cantidad de observaciones perdidas:\n\nAnalizar los datos con modelos capaces de lidiar con relativamente pocas observaciones perdidas (menos de 10%).\nLlevar a cabo imputación de datos perdidos (entre 10% y 30%).\nRepetir el experimento (más del 30%).\n\nEn este curso vamos a limitarnos a usar métodos de análisis corregidos cuando estemos ante la presencia de datos perdidos ya que la imputación de datos requiere de conocimientos teóricos extensos acerca de los tipos de mecanismos de pérdida de datos.\nEVITAR el reemplazar los valores perdidos por ceros. Esta suele ser una práctica más o menos común pero que introduce mayores problemas que los que “soluciona”.\nEn resumen, no hay que temer el contar con datos perdidos, siempre y cuando estos no sean masivos."
+  },
+  {
+    "objectID": "biohack-modulo4.html#datos-perdidos-1",
+    "href": "biohack-modulo4.html#datos-perdidos-1",
+    "title": "biohack-modulo4",
+    "section": "Datos perdidos",
+    "text": "Datos perdidos\n\ninstall.packages(\"finalfit\")\nlibrary(finalfit)\nff_glimpse(penguins)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#datos-perdidos-2",
+    "href": "biohack-modulo4.html#datos-perdidos-2",
+    "title": "biohack-modulo4",
+    "section": "Datos perdidos",
+    "text": "Datos perdidos\n\nlibrary(finalfit)\nff_glimpse(penguins)\n\n$Continuous\n                              label var_type   n missing_n missing_percent\nbill_length_mm       bill_length_mm    &lt;dbl&gt; 342         2             0.6\nbill_depth_mm         bill_depth_mm    &lt;dbl&gt; 342         2             0.6\nflipper_length_mm flipper_length_mm    &lt;int&gt; 342         2             0.6\nbody_mass_g             body_mass_g    &lt;int&gt; 342         2             0.6\nyear                           year    &lt;int&gt; 344         0             0.0\n                    mean    sd    min quartile_25 median quartile_75    max\nbill_length_mm      43.9   5.5   32.1        39.2   44.5        48.5   59.6\nbill_depth_mm       17.2   2.0   13.1        15.6   17.3        18.7   21.5\nflipper_length_mm  200.9  14.1  172.0       190.0  197.0       213.0  231.0\nbody_mass_g       4201.8 802.0 2700.0      3550.0 4050.0      4750.0 6300.0\nyear              2008.0   0.8 2007.0      2007.0 2008.0      2009.0 2009.0\n\n$Categorical\n          label var_type   n missing_n missing_percent levels_n\nspecies species    &lt;fct&gt; 344         0             0.0        3\nisland   island    &lt;fct&gt; 344         0             0.0        3\nsex         sex    &lt;fct&gt; 333        11             3.2        2\n                                              levels levels_count\nspecies \"Adelie\", \"Chinstrap\", \"Gentoo\", \"(Missing)\" 152, 68, 124\nisland   \"Biscoe\", \"Dream\", \"Torgersen\", \"(Missing)\" 168, 124, 52\nsex                    \"female\", \"male\", \"(Missing)\" 165, 168, 11\n          levels_percent\nspecies       44, 20, 36\nisland        49, 36, 15\nsex     48.0, 48.8,  3.2"
+  },
+  {
+    "objectID": "biohack-modulo4.html#datos-perdidos-3",
+    "href": "biohack-modulo4.html#datos-perdidos-3",
+    "title": "biohack-modulo4",
+    "section": "Datos perdidos",
+    "text": "Datos perdidos\n\nlibrary(finalfit)\nff_glimpse(penguins)\nmissing_plot(penguins)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#datos-perdidos-4",
+    "href": "biohack-modulo4.html#datos-perdidos-4",
+    "title": "biohack-modulo4",
+    "section": "Datos perdidos",
+    "text": "Datos perdidos\n\nmissing_plot(penguins)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#paquete-gwalkr-para-exploración-de-datos",
+    "href": "biohack-modulo4.html#paquete-gwalkr-para-exploración-de-datos",
+    "title": "biohack-modulo4",
+    "section": "Paquete {GWalkR} para exploración de datos",
+    "text": "Paquete {GWalkR} para exploración de datos\n\ninstall.packages(\"GWalkR\")\nlibrary(GWalkR)\n\ndata(iris)\ngwalkr(iris)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#paquete-ggally-para-visualizar-correlaciones-y-más-estadísticos",
+    "href": "biohack-modulo4.html#paquete-ggally-para-visualizar-correlaciones-y-más-estadísticos",
+    "title": "biohack-modulo4",
+    "section": "Paquete {GGally} para visualizar correlaciones y más estadísticos",
+    "text": "Paquete {GGally} para visualizar correlaciones y más estadísticos\n\ninstall.packages(\"GGally\")\nlibrary(GGally)\n\nggpairs(penguins)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#mapas-de-calor",
+    "href": "biohack-modulo4.html#mapas-de-calor",
+    "title": "biohack-modulo4",
+    "section": "Mapas de calor",
+    "text": "Mapas de calor\n{ggplot2} tiene unas cuantas limitaciones, entre ellas producir mapas de calor con dendrogramas.\n\n\n\nmapa_calor_base &lt;- as.matrix(mtcars)\nheatmap(mapa_calor_base)"
+  },
+  {
+    "objectID": "biohack-modulo4.html#section-2",
+    "href": "biohack-modulo4.html#section-2",
+    "title": "biohack-modulo4",
+    "section": "",
+    "text": "Fin del módulo 4\n\n\n\n\n\n\n\nCréditos de fotos\n\n\nFoto portada por Allison Horst en allisonhorst.com\nFoto final por Peter Robbins en Unsplash\nResto de fotos: Varias fuentes"
+  }
+]

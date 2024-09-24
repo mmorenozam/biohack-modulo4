@@ -1,0 +1,1783 @@
+---
+logo: images/icon1_nb.png
+lang: es
+filters:
+  - timer
+format: 
+  letterbox-revealjs:
+    theme: custom.scss
+    progress: false
+    menu: true
+    width: 1400
+    height: 720
+    slide-number: true
+    preview-links: auto
+    touch: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 4
+      buttons: false
+    revealjs-plugins:
+      - pointer
+      
+callout-appearance: simple
+---
+
+## 
+
+::: columns
+::: {.column width="37.5%"}
+![](images/icon1_nb.png){style="margin-left:15px"}
+:::
+
+::: {.column width="60%"}
+::: {.title data-id="title"}
+Módulo 4: Visualización de datos con `{ggplot2}`
+:::
+
+Mauricio Moreno, PhD
+:::
+:::
+
+![](images/ggplot.png){.absolute bottom=50 left=0 width=500}
+
+
+
+## Introducción
+
+::: incremental
+-   Usaremos los datos del `{palmerpenguins}` así también como los datos del archivo de Excel "rotaXLS.xlsx".
+
+-   Paquetes adicionales: `{viridis}`, `{patchwork}`, `{scales}`: 
+
+-   `install.packages("viridis", "patchwork", "scales")`
+
+-   Aprenderemos paso a paso cómo funciona `{ggplot2}` dando un vistazo a sus funciones y objetos.
+:::
+
+
+## `{ggplot2}` {.smaller}
+
+::: incremental
+-   `{ggplot2}` es un paquete de gráficos creado por Hadley Wickham en 2005 como una opción alternativa a los gráficos base de R (es de hecho este paquete el que inició el `{tidyverse}`).
+
+-   Se basa en añadir elementos a un gráfico capa por capa.
+
+-   `{ggplot2}` puede usar tanto tablas anchas como largas. Sin embargo, en la mayoría de los casos, se explotan más sus capacidades al utilizar tablas largas.
+
+-   Presenta varias ventajas, entre ellas:
+
+    -   Mayor versatilidad al integrar funciones predeterminadas que permiten cambiar entre tipos de gráficos fácil y rápidamente.
+
+    -   Amplia variedad de paletas de color y estilos (útiles para crear gráficos profesionales y listos para publicación).
+
+    -   Basta cantidad de librerías accesorias para gráficos especializados.
+
+-   Su funcionamiento se basa principalmente en:
+
+    -   El argumento de mapeo (`mapping`)
+
+    -   y, Geometrías (`geom_`).
+:::
+
+## Función de inicio `ggplot`
+
+::: incremental
+-   Constituye la primera capa o la base para llevar a cabo un gráfico.
+
+-   Posee dos argumentos principales:
+
+    -   `data` para indicar la tabla de datos a usarse
+
+    -   `mapping` para indicar las variables que gobernarán los ejes coordenados del gráfico
+:::
+
+## Función de inicio `ggplot` {visibility="uncounted"}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "1|2|4-6"
+library(palmerpenguins)
+library(ggplot2)
+
+ggplot(data = penguins,
+       mapping = aes(x = bill_length_mm, 
+                     y = bill_depth_mm))
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+library(palmerpenguins)
+library(ggplot2)
+
+ggplot(data = penguins,
+       mapping = aes(x = bill_length_mm, 
+                     y = bill_depth_mm))
+```
+
+:::
+:::
+
+## Función de inicio `ggplot` {visibility="uncounted"}
+
+No es necesario el usar todo el tiempo el nombre de los argumentos **en la función `ggplot`**:
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "1|2|4-6"
+library(palmerpenguins)
+library(ggplot2)
+
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm))
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+library(palmerpenguins)
+library(ggplot2)
+
+ggplot(penguins,aes(x = bill_length_mm, 
+                     y = bill_depth_mm))
+```
+
+:::
+:::
+
+## Geometrías {.smaller}
+
+::: incremental
+-   Las geometrías son objetos que serán superpuestos en la base creada por la función de inicio.
+
+-   En general, están nombradas con la preposición `geom_` seguida de su clase.
+
+-   Existen una variedad amplia de geometrías:
+
+    -   `geom_bar` para gráficos de barras
+
+    -   `geom_line` para gráficos de lineas
+
+    -   `geom_boxplot` para gráficos de caja y bigote
+
+    -   `geom_histogram` para histogramas
+
+    -   `geom_density` para densidades
+
+    -   [entre otras](https://ggplot2.tidyverse.org/reference/){target="_blank"}
+
+-   Para añadir geometrías y otras opciones a nuestro gráfico base usamos los operadores:
+
+    -   `+`, ó
+
+    -   `%+%`. Este último no es tan común, ya que sobre-escribe los datos originales.
+:::
+
+## Geometrías {visibility="uncounted"}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "2-3|4"
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm)) +
+  geom_point()
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm)) +
+  geom_point()
+```
+
+:::
+:::
+
+
+## Estéticas de las geometrías (*aesthetics*) {.smaller}
+
+::: incremental
+-   Las geometrías tienen argumentos en común independientemente de sus específicos usos.
+
+-   Entre estas están:
+
+    -   `alpha` determina el nivel de transparencia (entre 0 y 1).
+
+    -   `fill` determina el color de relleno de una geometría. Puede ser agregado de manera manual o en función de otra variable.
+
+    -   `color` o `colour` determina el color del contorno de una geometría. Puede ser agregado de manera manual o en función de otra variable.
+
+-   Existen *aesthetics* más específicos que funcionarán únicamente con ciertas geometrías, tales como:
+
+    -   `size`, determina el tamaño de los puntos en la geometría de puntos (`geom_point`)
+
+    -   `linetype`, con [6 posibles valores](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html){target="_blank"} permite seleccionar el estilo de línea.
+
+    -   `linewidth` determina el grosor de una línea.
+
+    -   `lineend` determina el estilo de los extremos de una línea.
+
+    -   `shape` determina el estilo de los puntos a mostrarse (25 posibles estilos)
+:::
+
+## Estéticas de las geometrías (*aesthetics*) {visibility="uncounted"}
+
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "4-5"
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm)) +
+  geom_point(alpha = 0.25, 
+             color = "red", size = 5)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm)) +
+  geom_point(alpha = 0.25, color = "red", size = 5)
+```
+
+:::
+:::
+
+
+
+# Formato básico de figuras en `{ggplot2}`
+
+## Agrupaciones {.scrollable}
+
+-   Se pueden asignar estéticas dependiendo de los grupos presentes en los datos.
+
+-   Podemos definirlo en la función de mapeo.
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "4"
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5)
+```
+
+:::
+:::
+
+## Escalas
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "6-7"
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2))
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2))
+```
+
+:::
+:::
+
+
+## Paletas de color
+
+::: incremental
+-   Una de las razones por las cuales `{ggplot2}` es tan popular, es la relativa sencillez de usar distintas paletas de color.
+
+-   Al no ser un curso dedicado a visualización de datos, nos limitaremos a explorar la oferta de la librería `{viridis}`.
+
+-   `{viridis}` ofrece 8 paletas de color basadas en secuencias de azul y amarillo que evitan en la medida de lo posible el color rojo. Es recomendada por ciertos Journals al ser amigable con personas daltónicas.
+
+:::
+
+## Paletas de color {.smaller visibility="uncounted"}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "1|9"
+library(viridis)
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+library(viridis)
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T)
+```
+
+:::
+:::
+
+## Facetas {.smaller}
+
+::: incremental
+
+-   Para generar gráficos de facetas (o también conocidos como paneles), `{ggplot2}` cuenta con dos funciones:
+
+-   `facet_wrap`: produce una figura de paneles en 2-D definida por una sola variable
+
+-   `facet_grid`: produce una figura de paneles en 2-D definida por variables que forman filas y columnas
+
+:::
+
+. . . 
+
+![](images/position-facets.png){fig-align="center"}
+
+## Facetas con `facet_wrap`  {.smaller}
+
+`facet_wrap` con una variable
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "9"
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_wrap(~island)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_wrap(~island)
+```
+
+:::
+:::
+
+## Facetas con `facet_wrap` {.smaller visibility="uncounted"}
+
+`facet_wrap` con dos variables
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "9"
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_wrap(species~island)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_wrap(species~island)
+```
+
+:::
+:::
+
+
+## Facetas con `facet_grid` {.smaller}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "9"
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(species~island)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(species~island)
+```
+
+:::
+:::
+
+## Etiquetas {.smaller}
+
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "10-15"
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(species~island) +
+  labs(title = "Largo de pico vs. Profundidad de pico",
+       subtitle = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = "Largo del pico",
+       y = "Profundidad del pico",
+       color = "Especie")
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(species~island) +
+  labs(title = "Largo de pico vs. Profundidad de pico",
+       subtitle = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = "Largo del pico",
+       y = "Profundidad del pico",
+       color = "Especie")
+```
+
+:::
+:::
+
+
+## Estilos {.smaller}
+
+-   `{ggplot2}` nos ofrece [10 estilos](https://ggplot2.tidyverse.org/reference/ggtheme.html){target="_blank"} predeterminados para la presentación de nuestras figuras.
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "16"
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(species~island) +
+  labs(title = "Largo de pico vs. Profundidad de pico",
+       subtitle = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = "Largo del pico",
+       y = "Profundidad del pico",
+       color = "Especie") +
+  theme_bw()
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(species~island) +
+  labs(title = "Largo de pico vs. Profundidad de pico",
+       subtitle = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = "Largo del pico",
+       y = "Profundidad del pico",
+       color = "Especie")+
+  theme_bw()
+```
+:::
+:::
+
+
+
+## Gráficos como objetos 
+
+::: incremental
+
+-   A diferencia de los gráficos base de R (no cubiertos a detalle en este curso), con `{ggplot2}` tenemos varias ventajas:
+
+    -   Añadir geometrías o estéticas sobre una figura sin necesidad de volver a ejecutar nuestro código.
+    
+    -   Poder organizar gráficos en disposiciones más complejas con la ayuda de `{patchwork}` como veremos más adelante.
+    
+    -   Exportar nuestros gráficos en forma de objetos de R sujetos a cambios posteriores.
+
+:::
+
+## Gráficos como objetos {.smaller}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "1|18-19"
+fig1 <- ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(species~island) +
+  labs(title = "Largo de pico vs. Profundidad de pico",
+       subtitle = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = "Largo del pico",
+       y = "Profundidad del pico",
+       color = "Especie") +
+  theme_bw()
+
+fig2 <- fig1 + theme_classic()
+fig2
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+fig1 <- ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(species~island) +
+  labs(title = "Largo de pico vs. Profundidad de pico",
+       subtitle = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = "Largo del pico",
+       y = "Profundidad del pico",
+       color = "Especie")+
+  theme_bw()
+fig2 <- fig1 + theme_classic()
+fig2
+```
+:::
+:::
+
+
+## Geometrías estadísticas
+
+::: incremental
+-   Otra funcionalidad importante son las geometrías estadísticas. Entre ellas:
+
+-   `geom_smooth`: grafica regresiones sobre nubes de puntos
+
+-   `geom_errorbar` y `geom_errorbarh`: grafican lineas de error verticales y horizontales respectivamente.
+
+-   `geom_ribbon`: grafica nubes sombreadas que pueden representar varios estadísticos como errores estándar, intervalos de confianza, etc.
+:::
+
+## Geometrías estadísticas {visibility="uncounted" .smaller}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "17"
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(species~island) +
+  labs(title = "Largo de pico vs. Profundidad de pico",
+       subtitle = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = "Largo del pico",
+       y = "Profundidad del pico",
+       color = "Especie") +
+  theme_bw() +
+  geom_smooth(method = "lm")
+
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm,
+           color = species)) +
+  geom_point(alpha = 0.25, size = 5) +
+  scale_x_continuous(breaks = seq(30, 60, 5)) +
+  scale_y_continuous(breaks = seq(10, 24, 2)) +
+  scale_color_viridis(discrete = T) +
+  facet_grid(species~island) +
+  labs(title = "Largo de pico vs. Profundidad de pico",
+       subtitle = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = "Largo del pico",
+       y = "Profundidad del pico",
+       color = "Especie")+
+  theme_bw() +
+  geom_smooth(method = "lm")
+
+```
+:::
+:::
+
+## Anatomía de un `ggplot`
+
+![](images/elements.png){fig-align="center"}
+
+::: footer
+Imagen tomada de [aquí](https://bookdown.org/alapo/learnr/){target="_blank"}
+:::
+
+# Tipos de gráficos
+
+## Introducción {.smaller}
+
+::: incremental
+
+-   En resumen, los tipos usados con más frecuencia, dependiendo del tipo de datos son:
+
+    -   Univariados
+    
+        -   Datos categóricos
+        
+        -   Datos cuantitativos
+    
+    -   Bivariados
+    
+        -   Datos categóricos vs. datos categóricos
+        
+        -   Datos cuantitativos vs. datos cuantitativos
+        
+        -   Datos categóricos vs. datos cuantitativos
+
+:::
+
+# Gráficos univariados categóricos
+
+## Gráficos de barras
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "2-3"
+ggplot(penguins,
+       aes(x = island)) +
+  geom_bar()
+
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = island)) +
+  geom_bar()
+```
+:::
+:::
+
+## Gráficos de barras {visibility="uncounted"}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "2-9"
+ggplot(penguins,
+       aes(x = island, fill = island)) +
+  geom_bar() +
+  labs(title = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "# de Pingüinos") +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = island, fill = island)) +
+  geom_bar() +
+  labs(title = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "# de Pingüinos") +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+:::
+:::
+
+## Gráficos de barras {visibility="uncounted"}
+
+Ejes con porcentajes usando `{scales}` y `{ggplot2}`
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "3|12"
+ggplot(penguins,
+       aes(x = island, 
+           y = after_stat(count/sum(count)),
+           fill = island)) +
+  geom_bar() +
+  labs(title = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "% de Pingüinos") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_y_continuous(labels = scales::percent)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(penguins,
+       aes(x = island, 
+           y = after_stat(count/sum(count)),
+           fill = island)) +
+  geom_bar() +
+  labs(title = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "% de Pingüinos") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_y_continuous(labels = scales::percent)
+```
+:::
+:::
+
+## Gráficos de barras {visibility="uncounted" .smaller}
+
+Añadiendo texto
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "1-3|9-10"
+library(dplyr)
+plt_resumen <- penguins |>
+  count(island)
+
+ggplot(plt_resumen,
+       aes(x = island, 
+           y = n,
+           fill = island)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = n), vjust = -0.5) +
+  labs(title = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "# de Pingüinos") +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+library(dplyr)
+plt_resumen <- penguins |>
+  count(island)
+
+ggplot(plt_resumen,
+       aes(x = island, 
+           y = n,
+           fill = island)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = n), vjust = -0.5) +
+  labs(title = "Pingüinos de Palmer",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "# de Pingüinos") +
+  theme_bw() +
+  theme(legend.position = "none")
+```
+:::
+:::
+
+## Gráficos de barras {visibility="uncounted" .smaller}
+
+Arreglando texto en los ejes (y otros detalles)
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "2"
+library(dplyr)
+plt2_resumen <- msleep |>
+  count(order) |>
+  mutate(pge = n / sum(n),
+         pge_tex = paste0(round(pge * 100), "%"))
+
+ggplot(plt2_resumen,
+       aes(x = reorder(order, pge), 
+           y = pge,
+           fill = order)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = pge_tex), vjust = -0.5) +
+  labs(title = "% de animales por orden en un estudio del sueño",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "% de animales por orden") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_y_continuous(labels = scales::percent)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+plt2_resumen <- msleep |>
+  count(order) |>
+  mutate(pge = n / sum(n),
+         pge_tex = paste0(round(pge * 100), "%"))
+
+ggplot(plt2_resumen,
+       aes(x = reorder(order, pge), 
+           y = pge,
+           fill = order)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = pge_tex), vjust = -0.5) +
+  labs(title = "% de animales por orden en un estudio del sueño",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "% de animales por orden") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_y_continuous(labels = scales::percent)
+```
+:::
+:::
+
+## Gráficos de barras {visibility="uncounted" .smaller}
+
+Arreglando texto en los ejes (y otros detalles)
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "10|12|17|11"
+library(dplyr)
+plt2_resumen <- msleep |>
+  count(order) |>
+  mutate(pge = n / sum(n),
+         pge_tex = paste0(round(pge * 100), "%"))
+
+ggplot(plt2_resumen,
+       aes(x = reorder(order, pge), 
+           y = pge)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  geom_text(aes(label = pge_tex), hjust = -0.25) +
+  labs(title = "% de animales por orden\nen un estudio del sueño",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "% de animales por orden") +
+  theme_bw() +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip()
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+plt2_resumen <- msleep |>
+  count(order) |>
+  mutate(pge = n / sum(n),
+         pge_tex = paste0(round(pge * 100), "%"))
+
+ggplot(plt2_resumen,
+       aes(x = reorder(order, pge), 
+           y = pge)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  geom_text(aes(label = pge_tex), hjust = -0.25) +
+  labs(title = "% de animales por orden\nen un estudio del sueño",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "% de animales por orden") +
+  theme_bw() +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip()
+```
+:::
+:::
+
+## Gráficos de barras {visibility="uncounted" .smaller}
+
+Rotando el texto en los ejes
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "10|12|17|11"
+library(dplyr)
+plt2_resumen <- msleep |>
+  count(order) |>
+  mutate(pge = n / sum(n),
+         pge_tex = paste0(round(pge * 100), "%"))
+
+ggplot(plt2_resumen,
+       aes(x = reorder(order, pge), 
+           y = pge)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  geom_text(aes(label = pge_tex), vjust = -0.25) +
+  labs(title = "% de animales por orden\nen un estudio del sueño",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "% de animales por orden") +
+  theme_bw() +
+  scale_y_continuous(labels = scales::percent) +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1))
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+plt2_resumen <- msleep |>
+  count(order) |>
+  mutate(pge = n / sum(n),
+         pge_tex = paste0(round(pge * 100), "%"))
+
+ggplot(plt2_resumen,
+       aes(x = reorder(order, pge), 
+           y = pge)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  geom_text(aes(label = pge_tex), vjust = -0.25) +
+  labs(title = "% de animales por orden\nen un estudio del sueño",
+       caption = "Gráfica propia",
+       x = NULL,
+       y = "% de animales por orden") +
+  theme_bw() +
+  scale_y_continuous(labels = scales::percent) +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust = 1))
+```
+:::
+:::
+
+## Otros tipos de gráficos univariados categóricos
+
+::: incremental
+
+-   Gráficos de pastel: paquete [`{ggpie}`](https://cran.r-project.org/web/packages/ggpie/vignettes/ggpie.html){target="_blank"}
+
+-   Diagramas de árboles: paquete [`{treemapify}`](https://cran.r-project.org/web/packages/treemapify/vignettes/introduction-to-treemapify.html){target="_blank"}
+
+:::
+
+# Gráficos univariados Cuantitativos
+
+## Histogramas
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "3"
+ggplot(airquality, # Tabla de datos: airquality (R base)
+       aes(x = Temp)) +
+  geom_histogram()
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(airquality, # Tabla de datos: airquality (R base)
+       aes(x = Temp)) +
+  geom_histogram()
+```
+:::
+:::
+
+
+## Gráfico de densidad kernel
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "3"
+ggplot(airquality, # Tabla de datos: airquality (R base)
+       aes(x = Temp)) +
+  geom_density()
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(airquality, # Tabla de datos: airquality (R base)
+       aes(x = Temp)) +
+  geom_density()
+```
+:::
+:::
+
+# Gráficos bivariados Categórico vs. Categórico
+
+## Gráfico de barras apiladas
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "4"
+ggplot(mpg, # Tabla de datos: mpg (ggplot2)
+       aes(x = class,
+           fill = drv)) +
+  geom_bar(position = "stack")
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(mpg, # Tabla de datos: mpg (ggplot2)
+       aes(x = class,
+           fill = drv)) +
+  geom_bar(position = "stack")
+```
+:::
+:::
+
+## Gráfico de barras agrupadas
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "4"
+ggplot(mpg, # Tabla de datos: mpg (ggplot2)
+       aes(x = class,
+           fill = drv)) +
+  geom_bar(position = "dodge")
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(mpg, # Tabla de datos: mpg (ggplot2)
+       aes(x = class,
+           fill = drv)) +
+  geom_bar(position = "dodge")
+```
+:::
+:::
+
+## Gráfico de barras agrupadas {visibility="uncounted"}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "4"
+ggplot(mpg, # Tabla de datos: mpg (ggplot2)
+       aes(x = class,
+           fill = drv)) +
+  geom_bar(position = position_dodge(preserve = "single"))
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(mpg, # Tabla de datos: mpg (ggplot2)
+       aes(x = class,
+           fill = drv)) +
+  geom_bar(position = position_dodge(preserve = "single"))
+```
+:::
+:::
+
+
+## Gráfico de barras segmentadas
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "4"
+ggplot(mpg, # Tabla de datos: mpg (ggplot2)
+       aes(x = class,
+           fill = drv)) +
+  geom_bar(position = "fill"))
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+ggplot(mpg, # Tabla de datos: mpg (ggplot2)
+       aes(x = class,
+           fill = drv)) +
+  geom_bar(position = "fill")
+```
+:::
+:::
+
+## Agregando más formatos {.smaller}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+library(scales)
+ggplot(mpg, 
+       aes(x = factor(class,
+                      levels = c("2seater", "subcompact", 
+                                "compact", "midsize", 
+                                "minivan", "suv", "pickup")),
+           fill = factor(drv, 
+                         levels = c("f", "r", "4"),
+                         labels = c("delantera", 
+                                    "trasera", 
+                                    "4x4")))) + 
+  geom_bar(position = "fill") +
+  scale_y_continuous(breaks = seq(0, 1, .2), 
+                     label = percent) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(y = "Porcentage", 
+       fill="Tracción",
+       x = "Clase",
+       title = "Tracción de autos por clase") +
+  theme_minimal()
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+library(scales)
+ggplot(mpg, 
+       aes(x = factor(class,
+                      levels = c("2seater", "subcompact", 
+                                "compact", "midsize", 
+                                "minivan", "suv", "pickup")),
+           fill = factor(drv, 
+                         levels = c("f", "r", "4"),
+                         labels = c("delantera", 
+                                    "trasera", 
+                                    "4x4")))) + 
+  geom_bar(position = "fill") +
+  scale_y_continuous(breaks = seq(0, 1, .2), 
+                     label = percent) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(y = "Porcentage", 
+       fill="Tracción",
+       x = "Clase",
+       title = "Tracción de autos por clase") +
+  theme_minimal()
+```
+:::
+:::
+
+# Gráficos bivariados cuantitativo vs. cuantitativo
+
+## Gráficos de dispersión
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "1|4"
+penguins |>
+  ggplot(aes(x = bill_depth_mm, 
+             y = bill_length_mm)) +
+  geom_point()
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+penguins |>
+  ggplot(aes(x = bill_depth_mm, y = bill_length_mm)) +
+  geom_point()
+```
+:::
+:::
+
+## Gráficos de dispersión {visibility="uncounted" .smaller}
+
+Añadiendo líneas de regresión
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "5"
+penguins |>
+  ggplot(aes(x = bill_depth_mm, 
+             y = bill_length_mm)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+penguins |>
+  ggplot(aes(x = bill_depth_mm, y = bill_length_mm)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "5-6"
+penguins |>
+  ggplot(aes(x = bill_depth_mm, 
+             y = bill_length_mm)) +
+  geom_point() +
+  geom_smooth(method = "lm", 
+              formula = y ~ poly(x, 2))
+```
+
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+penguins |>
+  ggplot(aes(x = bill_depth_mm, 
+             y = bill_length_mm)) +
+  geom_point() +
+  geom_smooth(method = "lm", 
+              formula = y ~ poly(x, 2))
+```
+:::
+:::
+
+## Gráficos de líneas 
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "4"
+economics |>
+  ggplot(aes(x = date, 
+             y = pce)) +
+  geom_line()
+```
+
+
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+economics |>
+  ggplot(aes(x = date, 
+             y = pce)) +
+  geom_line()
+```
+:::
+:::
+
+# Gráficos bivariados categórico vs. cuantitativo
+
+## Gráficos de barras (para estadísticos descriptivos)
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "1-5|12-14"
+fig_dia <- diamonds |>
+  group_by(cut) %>%
+  summarise(precio_media = mean(price),
+            std.dev = sd(price),
+            se = std.dev/sqrt(n()))
+
+fig_dia |>
+  ggplot(aes(x = reorder(cut, precio_media), 
+             y = precio_media,  
+             fill = cut)) +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = precio_media - se,
+                    ymax = precio_media + se),
+                width = 0.2, color = "red")
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+fig_dia <- diamonds |>
+  group_by(cut) %>%
+  summarise(precio_media = mean(price),
+            std.dev = sd(price),
+            se = std.dev/sqrt(n()))
+
+fig_dia |>
+  ggplot(aes(x = reorder(cut, precio_media), 
+             y = precio_media,  
+             fill = cut)) +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = precio_media - se,
+                    ymax = precio_media + se),
+                width = 0.2, color = "red")
+```
+:::
+:::
+
+## Gráficos de densidad kernel agrupados
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "2-4"
+penguins |>
+  ggplot(aes(x = bill_length_mm, 
+             fill = species)) +
+  geom_density(alpha = 0.4)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+penguins |>
+  ggplot(aes(x = bill_length_mm, 
+             fill = species)) +
+  geom_density(alpha = 0.4)
+```
+:::
+:::
+
+## Gráficos de caja y bigote
+
+
+![](images/box.jpg){fig-align="center"}
+
+::: incremental
+-   Un gráfico de caja y bigote es el resumen de 5 cantidades de importancia para explorar una distribución: [la mediana, los cuantiles 1 y 3 y los valores mínimo y máximo de una distribución en función del RIC]{.fragment}
+:::
+
+::: footer
+Imagen de autoría de [Michael Galarnyk](https://builtin.com/data-science/boxplot){target="_blank"}
+:::
+
+## Gráficos de caja y bigote {visibility="uncounted"}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "2-5"
+penguins |>
+  ggplot(aes(x = species,
+             y = bill_length_mm, 
+             fill = species)) +
+  geom_boxplot()
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+penguins |>
+  ggplot(aes(x = species,
+             y = bill_length_mm, 
+             fill = species)) +
+  geom_boxplot()
+```
+:::
+:::
+
+## Gráficos de violín 
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "2-5"
+penguins |>
+  ggplot(aes(x = species,
+             y = bill_length_mm, 
+             fill = species)) +
+  geom_violin()
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+penguins |>
+  ggplot(aes(x = species,
+             y = bill_length_mm, 
+             fill = species)) +
+  geom_violin()
+```
+:::
+:::
+
+## Gráficos de violín 
+
+Combinados con caja y bigotes
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+#| code-line-numbers: "6-9"
+penguins |>
+  ggplot(aes(x = species,
+             y = bill_length_mm, 
+             fill = species)) +
+  geom_violin()+
+  geom_boxplot(width = 0.15,
+               fill = "orange",
+               outlier.color = "red",
+               outlier.size = 3)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+penguins |>
+  ggplot(aes(x = species,
+             y = bill_length_mm, 
+             fill = species)) +
+  geom_violin()+
+  geom_boxplot(width = 0.15,
+               fill = "orange",
+               outlier.color = "red",
+               outlier.size = 3)
+```
+:::
+:::
+
+# Combinando y exportando gráficos {.smaller .scrollable}
+
+## `{patchwork}`
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+library(patchwork)
+p1 <- penguins |>
+  ggplot(aes(x = species,
+             y = bill_length_mm, 
+             fill = species)) +
+  geom_violin()+
+  geom_boxplot(width = 0.15,
+               fill = "orange",
+               outlier.color = "red",
+               outlier.size = 3)
+
+p2 <- penguins |>
+  ggplot(aes(x = bill_depth_mm, 
+             y = bill_length_mm)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+
+p3 <- economics |>
+  ggplot(aes(x = date, 
+             y = pce)) +
+  geom_line()
+
+(p1 + p2)/p3
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+library(patchwork)
+p1 <- penguins |>
+  ggplot(aes(x = species,
+             y = bill_length_mm, 
+             fill = species)) +
+  geom_violin()+
+  geom_boxplot(width = 0.15,
+               fill = "orange",
+               outlier.color = "red",
+               outlier.size = 3)
+
+p2 <- penguins |>
+  ggplot(aes(x = bill_depth_mm, 
+             y = bill_length_mm)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+
+p3 <- economics |>
+  ggplot(aes(x = date, 
+             y = pce)) +
+  geom_line()
+
+(p1 + p2)/p3
+```
+:::
+:::
+
+## `{patchwork}` {visibility="uncounted"}
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+. . .
+
+fig1 <- (p1 + p2)/p3 + plot_annotation(tag_levels = "A")
+fig1
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+fig1 <- (p1 + p2)/p3 + plot_annotation(tag_levels = "A")
+fig1
+```
+:::
+:::
+
+## Exportando gráficos con `ggsave`
+
+```{r echo=T, eval=T, error=T, fig.align = 'center'}
+ggsave("out_fig/figura1.png", plot = fig1, width = 8)
+ggsave("out_fig/figura1.jpg", plot = fig1, width = 8)
+ggsave("out_fig/figura1.pdf", plot = fig1, width = 8)
+```
+
+Mira en la ayuda para más información de los argumentos de `ggsave`.
+
+## {}
+
+::: columns
+::: {.column width="37.5%"}
+
+:::
+::: {.column width="60%"}
+
+::: {.title data-id="title"}
+[Ejercicios 4.1](https://mmorenozam.github.io/biohack-website/ejercicios_m4.html#ejercicios-4.1){target="_blank"}
+:::
+
+:::{.timer #Timer1 seconds=900 starton=interaction}
+:::
+
+:::
+:::
+
+![](images/medal.png){.image-left}
+
+
+
+# Análisis Exploratorio de Datos (AED)
+
+## Introducción {.smaller}
+
+::: incremental
+
+-   Debería idealmente llevarse a cabo antes de formalmente analizar los datos.
+
+-   Es de mucha importancia porque nos permite:
+
+    -   Hallar posibles inconsistencias de los datos
+    
+    -   Identificar observaciones perdidas y su posible impacto
+    
+    -   Deterimnar la presencia de posibles observaciones anormales (*outliers*)
+    
+    -   Tener una idea de la distribución de los datos (que nos facilitará ajustar nuestros modelos estadísticos en caso de ser necesario)
+    
+    -   Checar por correlaciones múltiples entre las variables (particularmente útil en modelos de regresión lineal)
+
+-   El AED no tiene un flujo de trabajo formal, pero siempre vale la pena comenzar por chequear los estadísticos descriptivos y la posible pérdida de datos.
+
+:::
+
+## Datos perdidos {.smaller}
+
+::: incremental
+-   La perdida de datos es común en casi todo experimento.
+
+-   De existir, existen tres alternativas para proceder dependiendo de la cantidad de observaciones perdidas:
+
+    -   Analizar los datos con modelos capaces de lidiar con relativamente pocas observaciones perdidas (menos de 10\%).
+    
+    -   Llevar a cabo imputación de datos perdidos (entre 10\% y 30\%).
+    
+    -   Repetir el experimento (más del 30%).
+
+-   En este curso vamos a limitarnos a usar métodos de análisis corregidos cuando estemos ante la presencia de datos perdidos ya que la imputación de datos requiere de conocimientos teóricos extensos acerca de los tipos de mecanismos de pérdida de datos.
+
+-   **EVITAR** el reemplazar los valores perdidos por ceros. Esta suele ser una práctica más o menos común pero que introduce mayores problemas que los que "soluciona".
+
+-   En resumen, no hay que temer el contar con datos perdidos, siempre y cuando estos no sean masivos.
+:::
+
+## Datos perdidos {visibility="uncounted" autoanimate="true" .smaller}
+
+```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
+#| code-line-numbers: "1|2"
+install.packages("finalfit")
+library(finalfit)
+ff_glimpse(penguins)
+```
+
+## Datos perdidos {visibility="uncounted" autoanimate="true" .smaller}
+
+```{r echo=T, eval=T, error=T, fig.align = 'center', fig.height=4}
+library(finalfit)
+ff_glimpse(penguins)
+```
+
+## Datos perdidos {visibility="uncounted" autoanimate="true" .smaller}
+
+```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=4}
+#| code-line-numbers: "3"
+library(finalfit)
+ff_glimpse(penguins)
+missing_plot(penguins)
+```
+
+## Datos perdidos {visibility="uncounted" autoanimate="true" .smaller}
+
+```{r echo=T, eval=T, error=T, fig.align = 'center', fig.height=6}
+missing_plot(penguins)
+```
+
+## Paquete `{GWalkR}` para exploración de datos
+
+```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=6}
+install.packages("GWalkR")
+library(GWalkR)
+
+data(iris)
+gwalkr(iris)
+```
+
+## Paquete `{GGally}` para visualizar correlaciones y más estadísticos
+
+```{r echo=T, eval=F, error=T, fig.align = 'center', fig.height=6}
+install.packages("GGally")
+library(GGally)
+
+ggpairs(penguins)
+```
+
+# Antes de terminar
+
+## Mapas de calor
+
+`{ggplot2}` tiene unas cuantas limitaciones, entre ellas producir mapas de calor con dendrogramas.
+
+::: columns
+::: {.column width="50%"}
+```{r echo=T, eval=F, error=T, fig.align = 'center'}
+mapa_calor_base <- as.matrix(mtcars)
+heatmap(mapa_calor_base)
+```
+:::
+
+::: {.column .fragment width="50%"}
+```{r echo=F, eval=T, error=T, fig.align = 'center'}
+mapa_calor_base <- as.matrix(mtcars)
+heatmap(mapa_calor_base)
+```
+:::
+:::
+
+## {}
+
+::: columns
+::: {.column width="60%"}
+
+::: {.title data-id="title"}
+Fin del módulo 4
+:::
+
+::: {.callout-tip}
+## Créditos de fotos
+
+Foto portada por <a href="https://allisonhorst.com/r-packages-functions">Allison Horst</a> en <a href="https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/9a306c0a-dac8-413d-ba2e-cc7fd4c4d5c8_rw_1920.png?h=c802991088a9623f1f7aa18c470797ee">allisonhorst.com</a>
+
+Foto final por <a href="https://unsplash.com/@prphotography262?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Peter Robbins</a> en <a href="https://unsplash.com/photos/a-red-and-white-sign-sitting-on-the-side-of-a-road-i1zJw2smw_I?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+  
+  
+
+Resto de fotos: Varias fuentes
+:::
+
+:::
+
+::: {.column width="37.5%"}
+
+![](images/icon1_nb.png){style="margin-left:100px"}
+
+
+:::
+:::
+
+![](images/peter-robbins-i1zJw2smw_I-unsplash.jpg){.image-right}
