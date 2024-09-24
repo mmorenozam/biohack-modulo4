@@ -1611,6 +1611,60 @@ ggsave("out_fig/figura1.pdf", plot = fig1, width = 8)
 
 Mira en la ayuda para más información de los argumentos de `ggsave`.
 
+## Antes de los ejercicios...
+
+El dataset de recursos por depredación
+
+![](images/frog.jpg){fig-align="center"}
+
+::: footer
+Imagen tomada por [David Mark](https://pixabay.com/users/12019-12019/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=69813){target="_blank"} de [Pixabay](https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=69813){target="_blank"}
+:::
+
+## El dataset de recursos por depredación {.smaller visibility="uncounted"}
+
+::: incremental
+-   Los datos que usaremos en esta y otras secciones corresponden a un experimento del [Prof. Justin C. Touchon](https://www.jstor.org/stable/23436298){target="_blank"} acerca de la interacción entre predadores y recursos.
+
+-   El experimento consistió de múltiples tanques (mesocosmos) dispuestos al aire libre en Gamboa, Panamá. Los investigadores tenían por objetivo el saber como la variación en la incubación de huevos de la rana arbórea de ojos rojos podría afectar su desarrollo hasta la metamorfosis bajo varias combinaciones de recursos y predadores.
+
+-   Los tratamientos fueron los siguientes:
+
+    -   Edad de incubación: Temprana (`E`: 4 días después de la oviposición) o tardía (`L`: 6 días después de la oviposición).
+
+    -   Predadores: control (`C`), no letal (`NL`: larvas de libélula enjauladas) y letal (`L`: larvas de libélula libres)
+
+    -   Recursos: bajo (`Lo`: 0.75 g) o alto (`Hi`: 1.5 g) de comida suministrados cada 5 días.
+
+-   Los mesocosmos fueron colocados en 8 bloques de 12 tanques cada uno.
+
+-   El experimento inició con 50 renacuajos por tanque y terminó cuando todos los renacuajos alcanzaron la metamorfosis, o murieron.
+:::
+
+## El dataset de recursos por depredación {.smaller visibility="uncounted"}
+
+::: incremental
+-   Variables de respuesta:
+
+    -   Edad de metaformosis contada desde el día de oviposición (`Age.DPO`).
+
+    -   Edad de salida del agua (`Age.FromEmergence`)
+
+    -   Longitud nariz-cloaca al emerger (`SVL.initial`)
+
+    -   Longitud de la cola al emerger (`Tail.initial`)
+
+    -   Longitud nariz-cloaca al término de la reabsorción de la cola (`SVL.final`)
+
+    -   Peso al término de la reabsorción de la cola (`Mass.final`)
+
+    -   Número de días requeridos por cada metamorfo para reabsorber completamente la cola (`Resorb.days`)
+
+-   18 tanques conteniendo predadores no letales fueron descartados debido al brote de una enfermedad
+
+-   **NOTA:** el dataset original de Touchon contiene alrededor de 2500 observaciones. Sin embargo, para poder usar los datos bajo los supuestos del ANOVA es necesario reducirlos a las medias aritméticas de cada tratamiento por cuanto se tratan de pseudo repeticiones. Esta reducción ya está hecha en el archivo "touchon.csv" disponible con el [resto de materiales extras del curso.](https://mmorenozam.github.io/biohack-website/recursos.html){target="_blank"}
+:::
+
 ## {}
 
 ::: columns

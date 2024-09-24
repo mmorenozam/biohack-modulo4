@@ -371,6 +371,27 @@
     "text": "Exportando gráficos con ggsave\n\nggsave(\"out_fig/figura1.png\", plot = fig1, width = 8)\nggsave(\"out_fig/figura1.jpg\", plot = fig1, width = 8)\nggsave(\"out_fig/figura1.pdf\", plot = fig1, width = 8)\n\nMira en la ayuda para más información de los argumentos de ggsave."
   },
   {
+    "objectID": "biohack-modulo4.html#antes-de-los-ejercicios",
+    "href": "biohack-modulo4.html#antes-de-los-ejercicios",
+    "title": "biohack-modulo4",
+    "section": "Antes de los ejercicios…",
+    "text": "Antes de los ejercicios…\nEl dataset de recursos por depredación\n\n\nImagen tomada por David Mark de Pixabay"
+  },
+  {
+    "objectID": "biohack-modulo4.html#el-dataset-de-recursos-por-depredación",
+    "href": "biohack-modulo4.html#el-dataset-de-recursos-por-depredación",
+    "title": "biohack-modulo4",
+    "section": "El dataset de recursos por depredación",
+    "text": "El dataset de recursos por depredación\n\n\nLos datos que usaremos en esta y otras secciones corresponden a un experimento del Prof. Justin C. Touchon acerca de la interacción entre predadores y recursos.\nEl experimento consistió de múltiples tanques (mesocosmos) dispuestos al aire libre en Gamboa, Panamá. Los investigadores tenían por objetivo el saber como la variación en la incubación de huevos de la rana arbórea de ojos rojos podría afectar su desarrollo hasta la metamorfosis bajo varias combinaciones de recursos y predadores.\nLos tratamientos fueron los siguientes:\n\nEdad de incubación: Temprana (E: 4 días después de la oviposición) o tardía (L: 6 días después de la oviposición).\nPredadores: control (C), no letal (NL: larvas de libélula enjauladas) y letal (L: larvas de libélula libres)\nRecursos: bajo (Lo: 0.75 g) o alto (Hi: 1.5 g) de comida suministrados cada 5 días.\n\nLos mesocosmos fueron colocados en 8 bloques de 12 tanques cada uno.\nEl experimento inició con 50 renacuajos por tanque y terminó cuando todos los renacuajos alcanzaron la metamorfosis, o murieron."
+  },
+  {
+    "objectID": "biohack-modulo4.html#el-dataset-de-recursos-por-depredación-1",
+    "href": "biohack-modulo4.html#el-dataset-de-recursos-por-depredación-1",
+    "title": "biohack-modulo4",
+    "section": "El dataset de recursos por depredación",
+    "text": "El dataset de recursos por depredación\n\n\nVariables de respuesta:\n\nEdad de metaformosis contada desde el día de oviposición (Age.DPO).\nEdad de salida del agua (Age.FromEmergence)\nLongitud nariz-cloaca al emerger (SVL.initial)\nLongitud de la cola al emerger (Tail.initial)\nLongitud nariz-cloaca al término de la reabsorción de la cola (SVL.final)\nPeso al término de la reabsorción de la cola (Mass.final)\nNúmero de días requeridos por cada metamorfo para reabsorber completamente la cola (Resorb.days)\n\n18 tanques conteniendo predadores no letales fueron descartados debido al brote de una enfermedad\nNOTA: el dataset original de Touchon contiene alrededor de 2500 observaciones. Sin embargo, para poder usar los datos bajo los supuestos del ANOVA es necesario reducirlos a las medias aritméticas de cada tratamiento por cuanto se tratan de pseudo repeticiones. Esta reducción ya está hecha en el archivo “touchon.csv” disponible con el resto de materiales extras del curso."
+  },
+  {
     "objectID": "biohack-modulo4.html#section-1",
     "href": "biohack-modulo4.html#section-1",
     "title": "biohack-modulo4",

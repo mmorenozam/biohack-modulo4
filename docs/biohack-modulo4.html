@@ -1716,6 +1716,50 @@
 </div>
 <p>Mira en la ayuda para más información de los argumentos de <code>ggsave</code>.</p>
 </section>
+<section id="antes-de-los-ejercicios" class="slide level2">
+<h2>Antes de los ejercicios…</h2>
+<p>El dataset de recursos por depredación</p>
+
+<img data-src="images/frog.jpg" class="quarto-figure quarto-figure-center r-stretch"><div class="footer">
+<p>Imagen tomada por <a href="https://pixabay.com/users/12019-12019/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=69813" target="_blank">David Mark</a> de <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=69813" target="_blank">Pixabay</a></p>
+</div>
+</section>
+<section id="el-dataset-de-recursos-por-depredación" class="slide level2 smaller" data-visibility="uncounted">
+<h2>El dataset de recursos por depredación</h2>
+<div>
+<ul>
+<li class="fragment"><p>Los datos que usaremos en esta y otras secciones corresponden a un experimento del <a href="https://www.jstor.org/stable/23436298" target="_blank">Prof.&nbsp;Justin C. Touchon</a> acerca de la interacción entre predadores y recursos.</p></li>
+<li class="fragment"><p>El experimento consistió de múltiples tanques (mesocosmos) dispuestos al aire libre en Gamboa, Panamá. Los investigadores tenían por objetivo el saber como la variación en la incubación de huevos de la rana arbórea de ojos rojos podría afectar su desarrollo hasta la metamorfosis bajo varias combinaciones de recursos y predadores.</p></li>
+<li class="fragment"><p>Los tratamientos fueron los siguientes:</p>
+<ul>
+<li class="fragment"><p>Edad de incubación: Temprana (<code>E</code>: 4 días después de la oviposición) o tardía (<code>L</code>: 6 días después de la oviposición).</p></li>
+<li class="fragment"><p>Predadores: control (<code>C</code>), no letal (<code>NL</code>: larvas de libélula enjauladas) y letal (<code>L</code>: larvas de libélula libres)</p></li>
+<li class="fragment"><p>Recursos: bajo (<code>Lo</code>: 0.75 g) o alto (<code>Hi</code>: 1.5 g) de comida suministrados cada 5 días.</p></li>
+</ul></li>
+<li class="fragment"><p>Los mesocosmos fueron colocados en 8 bloques de 12 tanques cada uno.</p></li>
+<li class="fragment"><p>El experimento inició con 50 renacuajos por tanque y terminó cuando todos los renacuajos alcanzaron la metamorfosis, o murieron.</p></li>
+</ul>
+</div>
+</section>
+<section id="el-dataset-de-recursos-por-depredación-1" class="slide level2 smaller" data-visibility="uncounted">
+<h2>El dataset de recursos por depredación</h2>
+<div>
+<ul>
+<li class="fragment"><p>Variables de respuesta:</p>
+<ul>
+<li class="fragment"><p>Edad de metaformosis contada desde el día de oviposición (<code>Age.DPO</code>).</p></li>
+<li class="fragment"><p>Edad de salida del agua (<code>Age.FromEmergence</code>)</p></li>
+<li class="fragment"><p>Longitud nariz-cloaca al emerger (<code>SVL.initial</code>)</p></li>
+<li class="fragment"><p>Longitud de la cola al emerger (<code>Tail.initial</code>)</p></li>
+<li class="fragment"><p>Longitud nariz-cloaca al término de la reabsorción de la cola (<code>SVL.final</code>)</p></li>
+<li class="fragment"><p>Peso al término de la reabsorción de la cola (<code>Mass.final</code>)</p></li>
+<li class="fragment"><p>Número de días requeridos por cada metamorfo para reabsorber completamente la cola (<code>Resorb.days</code>)</p></li>
+</ul></li>
+<li class="fragment"><p>18 tanques conteniendo predadores no letales fueron descartados debido al brote de una enfermedad</p></li>
+<li class="fragment"><p><strong>NOTA:</strong> el dataset original de Touchon contiene alrededor de 2500 observaciones. Sin embargo, para poder usar los datos bajo los supuestos del ANOVA es necesario reducirlos a las medias aritméticas de cada tratamiento por cuanto se tratan de pseudo repeticiones. Esta reducción ya está hecha en el archivo “touchon.csv” disponible con el <a href="https://mmorenozam.github.io/biohack-website/recursos.html" target="_blank">resto de materiales extras del curso.</a></p></li>
+</ul>
+</div>
+</section>
 <section id="section-1" class="slide level2">
 <h2></h2>
 <div class="columns">
