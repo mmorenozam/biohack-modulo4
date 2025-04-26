@@ -1674,7 +1674,7 @@ Imagen tomada por [David Mark](https://pixabay.com/users/12019-12019/?utm_source
 ::: {.column width="60%"}
 
 ::: {.title data-id="title"}
-[Ejercicios 4.1](https://mmorenozam.github.io/biohack-website/ejercicios_m4.html#ejercicios-4.1){target="_blank"}
+[Ejercicios 4.1](https://mmorenozam.github.io/biohack_progR/ejercicios_m4.html#ejercicios-4.1){target="_blank"}
 :::
 
 :::{.timer #Timer1 seconds=900 starton=interaction}
